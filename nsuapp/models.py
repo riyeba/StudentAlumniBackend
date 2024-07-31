@@ -31,6 +31,7 @@ class ActiveStudent(models.Model):
     auth_password=models.CharField(max_length=350)
     verify_token=models.CharField(max_length=16,null=True)
     email_sent_condition_met = models.BooleanField(default=True,null=True)
+    Gender=models.CharField(max_length=350,default=True)
    
     
     
@@ -91,7 +92,46 @@ class Alumni(models.Model):
         # Call the parent save method after sending email or skipping it
         super().save(*args, **kwargs)
         
+ 
+class FemaleStudent(models.Model):
+    Surname= models.CharField(max_length=350)
+    First_name=models.CharField(max_length=350)
+    Degree = models.CharField(max_length=350)
+    College = models.CharField(max_length=350)
+    Phone_number = models.CharField(max_length=350)
+    Address= models.CharField(max_length=350,null=True,blank=True)
+    FamilyinSaudi = models.CharField(max_length=350)
+    Building_number= models.CharField(max_length=350, null=True, blank=True)
+    Room_number= models.CharField(max_length=350, null=True, blank=True)
+    Nextofkin_mobile=models.CharField(max_length=350)
+    photo= models.ImageField(upload_to='image/', blank=True,null=True)
+    auth_email=models.CharField(max_length=350,unique=True)
+    auth_password=models.CharField(max_length=350)
+    verify_token=models.CharField(max_length=16,null=True)
+    email_sent_condition_met = models.BooleanField(default=True,null=True)
+    Gender=models.CharField(max_length=350)
+   
+    
+    
+
+
+    
+
+    def save(self, *args, **kwargs):
+        # Check if the condition for sending the email is met
+        if self.email_sent_condition_met:
+            # Conditions are met, send email
+            send_mail(
+                'Verify Your nsuksu account(Active Student)',
+                'Here is the message.',
+                'ksunsu312@gmail.com',
+                [self.auth_email],
+                fail_silently=False,
+                html_message=f"<p>your OTP is </p><p>{self.verify_token}</p><p>Do not share your OTP with others.</p>"
+            )
         
+        # Call the parent save method after sending email or skipping it
+        super().save(*args, **kwargs)       
         
         
 class Head(models.Model):
