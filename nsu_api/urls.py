@@ -31,6 +31,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('nsu/', views.StudentList.as_view()),
     path('nsu/<int:pk>/', views.StudentDetail.as_view()),
+    path('female/', views.FemaleList.as_view()),
+    path('female/<int:pk>/', views.FemaleDetail.as_view()),
     path('adm/', views.AdminList.as_view()),
     path('attend/', views.AttendList.as_view()),
      path('attend/<int:pk>/', views.AttendDetail.as_view()),

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import ActiveStudent,Alumni,Head,Attendance,Speech, Portfolio,RecentEvent,UpComingEvent,Logo
-from nsuapp.serializers import NewActiveStudentSerializer,OldStudentSerializer,HeadSerializer,AttendanceSerializer,SpeechSerializer, PortfolioSerializer,RecentEventSerializer,UpComingEventSerializer,LogoSerializer
+from .models import ActiveStudent,Alumni,Head,Attendance,Speech, Portfolio,RecentEvent,UpComingEvent,Logo,FemaleStudent
+from nsuapp.serializers import NewActiveStudentSerializer,OldStudentSerializer,HeadSerializer,AttendanceSerializer,SpeechSerializer, PortfolioSerializer,RecentEventSerializer,UpComingEventSerializer,LogoSerializer,FemaleStudentSerializer
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -25,6 +25,18 @@ class StudentList(generics.ListCreateAPIView):
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ActiveStudent.objects.all()
     serializer_class = NewActiveStudentSerializer
+    
+    
+
+class FemaleList(generics.ListCreateAPIView):
+    queryset = FemaleStudent.objects.all()
+    serializer_class = FemaleStudentSerializer
+    
+
+
+class FemaleDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FemaleStudent.objects.all()
+    serializer_class = FemaleStudentSerializer
  
  
 class AdminList(generics.ListCreateAPIView):
@@ -209,7 +221,29 @@ def delete_model(request, pk):
         # Handle any other exceptions
         return JsonResponse({'bool': False, 'message': str(e)})
     
-    
+  
+  
+
+#Female Student#
+@csrf_exempt
+def female_login(request):
+    if request.method == 'POST':
+        auth_email = request.POST.get('auth_email')
+        auth_password = request.POST.get('auth_password')
+
+        try:
+            StudentData = FemaleStudent.objects.get(auth_email=auth_email, auth_password=auth_password)
+            return JsonResponse({'bool': True, 'active_id': StudentData.id, 'nav': 'showactive'})
+        except FemaleStudent.DoesNotExist:
+            pass
+        
+        try:
+            AdminData = Head.objects.get(email=auth_email, password=auth_password)
+            return JsonResponse({'booll': True, 'active_idd': AdminData.id})
+        except Head.DoesNotExist:
+            pass
+
+    return JsonResponse({'bool': False})  
 
 #ALUMNI VIEW#
 

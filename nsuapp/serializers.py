@@ -1,12 +1,16 @@
 from rest_framework import serializers
-from .models import ActiveStudent, Alumni,Head, Attendance,Speech ,Portfolio,RecentEvent,UpComingEvent,Logo
+from .models import ActiveStudent, Alumni,Head, Attendance,Speech ,Portfolio,RecentEvent,UpComingEvent,Logo,FemaleStudent
 
 class NewActiveStudentSerializer(serializers.ModelSerializer):
     class Meta:
      model=ActiveStudent
      fields='__all__'
      
-     
+class FemaleStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+     model=FemaleStudent
+     fields='__all__'
+          
 class OldStudentSerializer(serializers.ModelSerializer):
     class Meta:
      model=Alumni
