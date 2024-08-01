@@ -104,6 +104,12 @@ def student_login(request):
             pass
         
         try:
+            FemaleData = FemaleStudent.objects.get(auth_email=auth_email, auth_password=auth_password)
+            return JsonResponse({'boolll': True, 'active_id': FemaleData.id, 'nav': 'showactive'})
+        except FemaleStudent.DoesNotExist:
+            pass
+        
+        try:
             AdminData = Head.objects.get(email=auth_email, password=auth_password)
             return JsonResponse({'booll': True, 'active_idd': AdminData.id})
         except Head.DoesNotExist:
@@ -118,16 +124,40 @@ def student_login(request):
     
 #otp#
 
+# @csrf_exempt 
+# def check_otp(request):
+#     verify_token=request.POST['otp_digit']
+#     verify=ActiveStudent.objects.get(verify_token=verify_token)
+#     verifyfemale=FemaleStudent.objects.get(verify_token=verify_token)
+#     if verify:
+#        return JsonResponse({'bool': True,'verify':verify.id})
+#     elif verifyfemale :
+#        return JsonResponse({'booll': True,'verifyy':verifyfemale.id})
+#     else:
+#         return JsonResponse({'bool':False})
+    
 @csrf_exempt 
 def check_otp(request):
-    verify_token=request.POST['otp_digit']
-    verify=ActiveStudent.objects.get(verify_token=verify_token)
-    if verify:
-       return JsonResponse({'bool': True,'verify':verify.id})
-    else:
-        return JsonResponse({'bool':False})
-    
-    
+        if request.method == 'POST':   
+           verify_token = request.POST.get('otp_digit')
+       
+
+        try:
+             verify=ActiveStudent.objects.get(verify_token=verify_token)
+             return JsonResponse({'bool': True,'verify':verify.id})
+        except ActiveStudent.DoesNotExist:
+            pass
+        
+        try:
+             verifyfemale=FemaleStudent.objects.get(verify_token=verify_token)
+             return JsonResponse({'booll': True,'verifyy':verifyfemale.id})
+        except FemaleStudent.DoesNotExist:
+            pass
+        
+        return JsonResponse({'booll': False})          
+
+
+
 
   
  #forgot password#   
@@ -224,26 +254,7 @@ def delete_model(request, pk):
   
   
 
-#Female Student#
-@csrf_exempt
-def female_login(request):
-    if request.method == 'POST':
-        auth_email = request.POST.get('auth_email')
-        auth_password = request.POST.get('auth_password')
-
-        try:
-            StudentData = FemaleStudent.objects.get(auth_email=auth_email, auth_password=auth_password)
-            return JsonResponse({'bool': True, 'active_id': StudentData.id, 'nav': 'showactive'})
-        except FemaleStudent.DoesNotExist:
-            pass
-        
-        try:
-            AdminData = Head.objects.get(email=auth_email, password=auth_password)
-            return JsonResponse({'booll': True, 'active_idd': AdminData.id})
-        except Head.DoesNotExist:
-            pass
-
-    return JsonResponse({'bool': False})  
+    
 
 #ALUMNI VIEW#
 

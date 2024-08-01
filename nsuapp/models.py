@@ -109,7 +109,7 @@ class FemaleStudent(models.Model):
     auth_password=models.CharField(max_length=350)
     verify_token=models.CharField(max_length=16,null=True)
     email_sent_condition_met = models.BooleanField(default=True,null=True)
-    Gender=models.CharField(max_length=350)
+    Gender=models.CharField(max_length=350, default=True)
    
     
     
