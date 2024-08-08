@@ -25,13 +25,13 @@ class ActiveStudent(models.Model):
     FamilyinSaudi = models.CharField(max_length=350)
     Building_number= models.CharField(max_length=350, null=True, blank=True)
     Room_number= models.CharField(max_length=350, null=True, blank=True)
-    Nextofkin_mobile=models.CharField(max_length=350)
+    Nextofkin_mobile=models.CharField(max_length=350, blank=True,null=True)
     photo= models.ImageField(upload_to='image/', blank=True,null=True)
     auth_email=models.CharField(max_length=350,unique=True)
     auth_password=models.CharField(max_length=350)
     verify_token=models.CharField(max_length=16,null=True)
     email_sent_condition_met = models.BooleanField(default=True,null=True)
-    Gender=models.CharField(max_length=350,default=True)
+    Gender=models.CharField(max_length=350)
    
     
     
@@ -64,7 +64,7 @@ class Alumni(models.Model):
     Degree = models.CharField(max_length=350)
     College = models.CharField(max_length=350)
     Residence_Country=models.CharField(max_length=350)
-    Occupation=models.CharField(max_length=350, blank=True)
+    Occupation=models.CharField(max_length=350, blank=True,null=True)
     photo= models.ImageField(upload_to='image/', blank=True,null=True)
     Phone_number = models.CharField(max_length=350)
     auth_email=models.CharField(max_length=350,unique=True)
@@ -103,13 +103,13 @@ class FemaleStudent(models.Model):
     FamilyinSaudi = models.CharField(max_length=350)
     Building_number= models.CharField(max_length=350, null=True, blank=True)
     Room_number= models.CharField(max_length=350, null=True, blank=True)
-    Nextofkin_mobile=models.CharField(max_length=350)
+    Nextofkin_mobile=models.CharField(max_length=350, blank=True,null=True)
     photo= models.ImageField(upload_to='image/', blank=True,null=True)
     auth_email=models.CharField(max_length=350,unique=True)
     auth_password=models.CharField(max_length=350)
     verify_token=models.CharField(max_length=16,null=True)
     email_sent_condition_met = models.BooleanField(default=True,null=True)
-    Gender=models.CharField(max_length=350, default=True)
+    Gender=models.CharField(max_length=350)
    
     
     

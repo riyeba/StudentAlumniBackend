@@ -55,10 +55,15 @@ urlpatterns = [
     path('login/', views.student_login),
     path('check/', views.check_otp),
     path('forgot/', views.forgot_login),
+     path('forgotf/', views.forgot_loginf), 
     path('verify/', views.forgot_otp),
-    path('editpass/<int:pk>/', views.edit_model),
+    path('verifyfemale/', views.forgot_otpf),
+    path('editpass/<int:pk>/', views.edit_model), 
+    path('editpassf/<int:pk>/', views. edit_modelfemale),
     path('deleteotp/<int:pk>/', views.delete_otp),
-    path('remove/<int:pk>/', views.delete_model),
+    path('deleteotpf/<int:pk>/', views.delete_otpfemale),
+    path('remove/<int:pk>/', views.delete_model), 
+    path('removefemale/<int:pk>/', views.delete_modelfemale),
     
     
      path('nsual/', views.AlumniList.as_view()),

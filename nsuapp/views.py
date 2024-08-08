@@ -105,7 +105,7 @@ def student_login(request):
         
         try:
             FemaleData = FemaleStudent.objects.get(auth_email=auth_email, auth_password=auth_password)
-            return JsonResponse({'boolll': True, 'active_id': FemaleData.id, 'nav': 'showactive'})
+            return JsonResponse({'boolll': True, 'active_iddd': FemaleData.id, 'nav': 'showactive'})
         except FemaleStudent.DoesNotExist:
             pass
         
@@ -190,7 +190,15 @@ def forgot_otp(request):
     else:
         return JsonResponse({'bool':False})
  
- 
+  #forgot OTP#
+@csrf_exempt 
+def forgot_otpf(request):
+    verify_token=request.POST['otp_digit']
+    verify=FemaleStudent.objects.get(verify_token=verify_token)
+    if verify:
+       return JsonResponse({'bool': True,'verify':verify.id})
+    else:
+        return JsonResponse({'bool':False})
  
  #change password#
     
@@ -207,8 +215,37 @@ def edit_model(request, pk):
     return render(request, 'edit_model.html', {'instance': instanx })
 
 
+#female edit model#
+@csrf_exempt
+def edit_modelfemale(request, pk):
+    instanx =   FemaleStudent.objects.get(pk=pk)
+    
+    if request.method == 'POST':
+        instanx.auth_password = request.POST.get('auth_password')
+        instanx.email_sent_condition_met = False
+        instanx .save()
+       
+        return JsonResponse({'message': 'Password updated successfully'})
+    return render(request, 'edit_model.html', {'instance': instanx })
 
-#delete Model#
+#female otp for edit model#
+
+@csrf_exempt 
+def forgot_loginf(request):
+    auth_email=request.POST['auth_email']
+    verify_token=request.POST['verify_token']
+    StudentData=FemaleStudent.objects.get(auth_email=auth_email)
+    
+    if StudentData:
+        instance = FemaleStudent.objects.get(pk=StudentData.id)
+        if request.method == 'POST':
+             instance.verify_token = verify_token
+             instance.email_sent_condition_met = True
+             instance.save()
+        
+        return JsonResponse({'bool': True,'forgot_idd':StudentData.id})
+    else:
+        return JsonResponse({'bool': False, 'error' :'invalid users'})
 
 #otp for delete model#
 @csrf_exempt
@@ -254,7 +291,47 @@ def delete_model(request, pk):
   
   
 
+   #female delete model#
+@csrf_exempt
+def delete_modelfemale(request, pk):
+    try:
+        # Retrieve the ActiveStudent instance by primary key
+        instanx = FemaleStudent.objects.get(pk=pk)
+        
+        if request.method == 'POST':
+            # Retrieve the verification code from POST data
+            verify_token = request.POST.get('otp_digit')
+            
+            # Check if the provided verification code matches
+            if verify_token == instanx.verify_token:
+                # If verification code matches, delete the instance
+                instanx.delete()
+                instanx.photo.delete()
+                return JsonResponse({'bool': True, 'message': 'Data deleted successfully'})
+            else:
+                # If verification code doesn't match, return error response
+                return JsonResponse({'bool': False, 'message': 'Incorrect verification code'})
+    except FemaleStudent.DoesNotExist:
+        return JsonResponse({'bool': False, 'message': 'ActiveStudent instance not found'})
+    except Exception as e:
+        # Handle any other exceptions
+        return JsonResponse({'bool': False, 'message': str(e)}) 
     
+    
+    
+#delete otp female#
+#otp for delete model#
+@csrf_exempt
+def delete_otpfemale(request, pk):
+    instanx = FemaleStudent.objects.get(pk=pk)
+    
+    if request.method == 'POST':
+        instanx.verify_token = request.POST.get('verify_token')
+        instanx.email_sent_condition_met = True
+        instanx .save()
+       
+        return JsonResponse({'message': 'Password updated successfully'})
+    return render(request, 'edit_model.html', {'instance': instanx })
 
 #ALUMNI VIEW#
 
