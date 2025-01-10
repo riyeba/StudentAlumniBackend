@@ -55,7 +55,7 @@ urlpatterns = [
     path('login/', views.student_login),
     path('check/', views.check_otp),
     path('forgot/', views.forgot_login),
-     path('forgotf/', views.forgot_loginf), 
+    
     path('verify/', views.forgot_otp),
     path('verifyfemale/', views.forgot_otpf),
     path('editpass/<int:pk>/', views.edit_model), 
